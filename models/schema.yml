@@ -1,0 +1,170 @@
+models:
+  - name: transactions_fact
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: id
+        data_type: text
+        constraints:
+          - type: not_null
+          - type: primary_key
+
+      - name: date_txn_modified_key
+        data_type: INT
+        constraints:
+          - type: foreign_key
+            name: fk_date_key
+            references:
+              table: date_dimension
+              column: date_id
+      - name: time_txn_modified_key
+        data_type: INT
+        constraints:
+          - type: foreign_key
+            name: fk_time_key
+            references:
+              table: time_dimension
+              column: time_id
+
+      - name: date_txn_created_key
+        data_type: INT
+        constraints:
+          - type: foreign_key
+            name: fk_date_key
+            references:
+              table: date_dimension
+              column: date_id
+      - name: time_txn_created_key
+        data_type: INT
+        constraints:
+          - type: foreign_key
+            name: fk_time_key
+            references:
+              table: time_dimension
+              column: time_id
+      
+      - name: date_txn_commit_key
+        data_type: INT
+        constraints:
+          - type: foreign_key
+            name: fk_date_key
+            references:
+              table: date_dimension
+              column: date_id
+      - name: time_txn_commit_key
+        data_type: INT
+        constraints:
+          - type: foreign_key
+            name: fk_time_key
+            references:
+              table: time_dimension
+              column: time_id
+        
+      - name: wallet_key
+        data_type: text
+        constraints:
+          - type: foreign_key
+            name: fk_wallet_key
+            references:
+              table: wallets_dimension
+              column: id
+      - name: client_key
+        data_type: text
+        constraints:
+          - type: foreign_key
+            name: fk_client_key
+            references:
+              table: clients_dimension
+              column: id
+      - name: employee_key
+        data_type: text
+        constraints:
+          - type: foreign_key
+            name: fk_employee_key
+            references:
+              table: employees_dimension
+              column: id
+      - name: profile_key
+        data_type: text
+        constraints:
+          - type: foreign_key
+            name: fk_profile_key
+            references:
+              table: profiles_dimension
+              column: id
+      - name: txn_key
+        data_type: text
+        constraints:
+          - type: foreign_key
+            name: fk_txn_key
+            references:
+              table: transactions_dimension
+              column: id
+      - name: is_employee
+        data_type: BOOLEAN
+      - name: amount
+        data_type: FLOAT
+      - name: total_cost_before_vat
+        data_type: numeric
+      - name: total_revenue_before_vat
+        data_type: numeric
+      - name: total_cost_after_vat
+        data_type: numeric
+      - name: total_revenue_after_vat
+        data_type: numeric
+      - name: total_profit
+        data_type: numeric
+      - name: loaddate
+        data_type: TIMESTAMP
+
+
+relationships:
+  - name: profiles_relationship
+    type: many_to_one
+    model: transactions_fact
+    reference_model: profiles_dimension
+    column: profile_key
+    reference_column: id
+
+  - name: txns_relationship
+    type: many_to_one
+    model: transactions_fact
+    reference_model: transactions_dimension
+    column: txn_key
+    reference_column: id
+    
+  - name: wallets_relationship
+    type: many_to_one
+    model: transactions_fact
+    reference_model: wallets_dimension
+    column: wallet_key
+    reference_column: id
+
+  - name: clients_relationship
+    type: many_to_one
+    model: transactions_fact
+    reference_model: clients_dimension
+    column: client_key
+    reference_column: id
+
+  - name: employees_relationship
+    type: many_to_one
+    model: transactions_fact
+    reference_model: employees_dimension
+    column: employee_key
+    reference_column: id
+
+  - name: date_relationship
+    type: many_to_one
+    model: transactions_fact
+    reference_model: date_dimension
+    column: date_key
+    reference_column: date_id
+
+  - name: time_relationship
+    type: many_to_one
+    model: transactions_fact
+    reference_model: time_dimension
+    column: time_key
+    reference_column: time_id

@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: dbt-dimensions
+    database: dbt
+    tables:
+      - name: transactions_dimension
+      - name: clients_dimension
+      - name: employees_dimension
+      - name: wallets_dimension
+      - name: profiles_dimension
+      - name: date_dimension
+      - name: time_dimension
+      - name: meeza_cost
+      - name: txn_proc_cost_table
+
+  - name: dbt-facts
+    database: dbt
+    tables:
+      - name: transactions_fact
+
+  - name: axis_sme
+    database: dbt
+    tables: 
+      - name: bankpaymenttransactions
+      - name: bankpayments
+      - name: disbursementtransactions
