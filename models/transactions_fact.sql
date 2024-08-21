@@ -122,8 +122,8 @@ revenue_table AS (
             0 AS employee_fees,
             0 AS transaction_fees,
             coalesce(bt.axisfees_aibyte_transform::float, 0) as bank_fees,
-            coalesce(bt.axisfees_aibyte_transform::float, 0) as total_revenue_before_vat,
-            coalesce(bt.axisfees_aibyte_transform::float, 0) * coalesce(bp.vat::float, 1) as total_revenue_after_vat
+            coalesce(bp.fees_aibyte_transform::float, 0) as total_revenue_before_vat,
+            coalesce(bp.fees_aibyte_transform::float, 0) * coalesce(bp.vat::float, 1) as total_revenue_after_vat
 
         FROM {{source('dbt-dimensions', 'transactions_dimension')}} td
         LEFT JOIN {{source('axis_sme', 'bankpaymenttransactions')}} bt ON td.txndetailsid = bt.originaltransactionid
