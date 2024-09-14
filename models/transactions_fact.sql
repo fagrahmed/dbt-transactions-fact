@@ -257,8 +257,8 @@ revenue_table AS (
             0 AS employee_fees,
             0 AS transaction_fees,
             0 AS bank_fees,
-            td.amount as total_revenue_before_vat,
-            td.amount as total_revenue_after_vat
+            td.txn_amount as total_revenue_before_vat,
+            td.txn_amount as total_revenue_after_vat
 
         FROM {{source('dbt-dimensions', 'transactions_dimension')}} td
         WHERE txntype = 'TransactionTypes_CREATE_VCN_FEES'
@@ -295,7 +295,7 @@ SELECT
     cd.id AS client_key,
     ed.id AS employee_key,  
     pd.id AS profile_key,
-    td.amount,
+    td.txn_amount,
     ROUND(coalesce(ct.total_cost_before_vat, 0)::numeric, 2) as total_cost_before_vat,
     ROUND(coalesce(rt.total_revenue_before_vat, 0)::numeric, 2) as total_revenue_before_vat,
     ROUND(coalesce(ct.total_cost_after_vat, 0)::numeric, 2) as total_cost_after_vat,
@@ -331,6 +331,6 @@ LEFT join revenue_table rt on td.txndetailsid = rt.txndetailsid
     WHERE td.loaddate > COALESCE((SELECT max(loaddate::timestamptz) FROM {{ source('dbt-facts', 'transactions_fact') }}), '1900-01-01'::timestamp)
 {% endif %}
 
-GROUP BY td.amount,
+GROUP BY td.txn_amount,
          ct.total_cost_before_vat, rt.total_revenue_before_vat, ct.total_cost_after_vat, rt.total_revenue_after_vat,
          ddm.date_id, tidm.time_id, ddcr.date_id, tidcr.time_id, ddct.date_id, tidct.time_id, ed.id, wd.id, cd.id, td.id, pd.id
