@@ -180,8 +180,8 @@ revenue_table AS (
             0 AS employee_fees,
             0 AS transaction_fees,
             0 AS bank_fees,
-            coalesce(td.amount::float, 0) AS total_revenue_before_vat,
-            coalesce(td.amount::float, 0) AS total_revenue_after_vat
+            coalesce(td.txn_amount::float, 0) AS total_revenue_before_vat,
+            coalesce(td.txn_amount::float, 0) AS total_revenue_after_vat
 
         FROM {{source('dbt-dimensions', 'transactions_dimension')}} td
         WHERE txntype = 'TransactionTypes_SEND_SME_SUBSCRIPTION_PAYMENT'
