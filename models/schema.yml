@@ -103,7 +103,7 @@ models:
               column: id
       - name: is_employee
         data_type: BOOLEAN
-      - name: amount
+      - name: txn_amount
         data_type: FLOAT
       - name: total_cost_before_vat
         data_type: numeric
