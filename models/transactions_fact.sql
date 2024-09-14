@@ -295,7 +295,7 @@ SELECT
     cd.id AS client_key,
     ed.id AS employee_key,  
     pd.id AS profile_key,
-    td.txn_amount,
+    td.txn_amount as amount,
     ROUND(coalesce(ct.total_cost_before_vat, 0)::numeric, 2) as total_cost_before_vat,
     ROUND(coalesce(rt.total_revenue_before_vat, 0)::numeric, 2) as total_revenue_before_vat,
     ROUND(coalesce(ct.total_cost_after_vat, 0)::numeric, 2) as total_cost_after_vat,
