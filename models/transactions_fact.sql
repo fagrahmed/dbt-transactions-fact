@@ -311,7 +311,7 @@ SELECT
 FROM {{source('dbt-dimensions', 'transactions_dimension')}} td
 LEFT JOIN {{source('dbt-dimensions', 'wallets_dimension')}} wd ON (td.walletdetailsid = wd.walletid AND wd.currentflag = true)
 LEFT JOIN {{source('dbt-dimensions', 'employees_dimension')}} ed ON (wd.walletnumber = ed.employee_mobile AND
-            (td.transaction_createdat_local between employee_createdat_local and employee_deletedat_local))
+            (td.transaction_createdat_local between employee_createdat_local and employee_deletedat_local) AND ed.currentflag = true)
 LEFT JOIN {{source('dbt-dimensions', 'clients_dimension')}} cd ON td.clientdetails ->> 'clientId' = cd.clientid
 LEFT JOIN {{source('dbt-dimensions', 'date_dimension')}} ddm ON DATE(td.transaction_modifiedat_local) = ddm.full_date
 LEFT JOIN {{source('dbt-dimensions', 'time_dimension')}} tidm ON TO_CHAR(td.transaction_modifiedat_local, 'HH24:MI:00') = TO_CHAR(tidm.full_time, 'HH24:MI:SS')
@@ -323,7 +323,7 @@ LEFT JOIN {{source('dbt-dimensions', 'date_dimension')}} ddct ON DATE(td.transac
 LEFT JOIN {{source('dbt-dimensions', 'time_dimension')}} tidct ON TO_CHAR(td.transaction_commitat_local, 'HH24:MI:00') = TO_CHAR(tidct.full_time, 'HH24:MI:SS')
 
 
-LEFT JOIN {{source('dbt-dimensions', 'profiles_dimension')}} pd ON (wd.profileid = pd.walletprofileid AND wd.partnerid = pd.partnerid)
+LEFT JOIN {{source('dbt-dimensions', 'profiles_dimension')}} pd ON (wd.profileid = pd.walletprofileid AND wd.partnerid = pd.partnerid AND pd.currentflag = true)
 LEFT join cost_table ct on td.txndetailsid = ct.txndetailsid
 LEFT join revenue_table rt on td.txndetailsid = rt.txndetailsid
 
